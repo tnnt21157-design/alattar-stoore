@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}سلة المشتريات | العطّار{% endblock %}
+{% block content %}
+<section class="wrap section narrow">
+  <span class="eyebrow">قبل إتمام الطلب</span><h1>سلة المشتريات</h1>
+  {% if items %}
+  <form method="post" action="{{ url_for('update_cart') }}">
+    <div class="table-wrap"><table><thead><tr><th>المنتج</th><th>السعر</th><th>الكمية</th><th>الإجمالي</th><th></th></tr></thead><tbody>
+    {% for item in items %}
+    <tr><td>{{ item.name }}</td><td>{{ "%.2f"|format(item.price) }} د.أ</td>
+      <td><input class="quantity-input" type="number" min="0" max="50" name="{{ item.id }}" value="{{ item.quantity }}"></td>
+      <td>{{ "%.2f"|format(item.subtotal) }} د.أ</td>
+      <td><button class="remove-button" type="submit" formaction="{{ url_for('remove_from_cart', product_id=item.id) }}" formmethod="post" formnovalidate>حذف</button></td></tr>
+    {% endfor %}
+    </tbody></table></div>
+    <div class="cart-actions"><button class="btn outline-btn" type="submit">تحديث الكميات</button><strong>الإجمالي: <span class="price">{{ "%.2f"|format(total) }} د.أ</span></strong></div>
+  </form>
+  <p class="muted">الإجمالي لا يشمل التوصيل؛ أجرة التوصيل تبدأ من دينار حسب المنطقة.</p>
+  <a class="btn gold-btn full-btn" href="{{ url_for('checkout') }}">إتمام الطلب عبر واتساب</a>
+  {% else %}
+  <div class="empty-state"><span>🛒</span><h2>سلتك فارغة حاليًا</h2><p>تصفّح المنتجات وأضف ما تحتاجه.</p><a class="btn dark-btn" href="{{ url_for('home') }}">ابدأ التسوّق</a></div>
+  {% endif %}
+</section>
+{% endblock %}

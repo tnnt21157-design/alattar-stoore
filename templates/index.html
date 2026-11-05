@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="hero wrap">
+  <div class="hero-copy">
+    <span class="eyebrow">من خيرات أرضنا</span>
+    <h1>الطبيعة... <em>بنكهتها الأصيلة</em></h1>
+    <p>اكتشف تشكيلة الأعشاب والبهارات والبقوليات والمونة البلدية من متجر العطّار.</p>
+    <a class="btn gold-btn" href="{{ url_for('category', category_id='herbs') }}">تسوّق منتجاتنا</a>
+  </div>
+  <div class="hero-art"><div class="hero-circle">❧</div><span>طبيعة أصيلة<br>وجودة تستحق الثقة</span></div>
+</section>
+<section class="wrap section">
+  <div class="section-heading"><div><span class="eyebrow">تصفّح حسب القسم</span><h2>أقسام المتجر</h2></div></div>
+  <div class="category-grid">
+    {% for key, item in categories.items() %}
+    <a class="category-card" href="{{ url_for('category', category_id=key) }}">
+      <span class="category-symbol">{% if key == 'herbs' %}🌿{% elif key == 'grains' %}🌾{% elif key == 'spices' %}🫙{% else %}🏺{% endif %}</span>
+      <h3>{{ item.title }}</h3><p>{{ item.description }}</p><span class="text-link">تصفّح القسم ←</span>
+    </a>
+    {% endfor %}
+  </div>
+</section>
+<section class="wrap section">
+  <div class="section-heading"><div><span class="eyebrow">اختيارات من العطّار</span><h2>منتجات مميزة</h2></div></div>
+  <div class="product-grid">
+    {% for p in featured %}
+    <article class="product-card">
+      <a class="product-photo" href="{{ url_for('category', category_id=p.category) }}">
+        <img src="{{ url_for('static', filename='images/' + p.image) }}" alt="{{ p.name }}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <span class="image-placeholder">🌿<small>{{ p.name }}</small></span>
+      </a>
+      <div class="product-info"><h3>{{ p.name }}</h3><p class="price">{{ "%.2f"|format(p.price) }} د.أ</p>
+      <form method="post" action="{{ url_for('add_to_cart', product_id=p.id) }}"><button class="btn dark-btn" type="submit">أضف للسلة +</button></form></div>
+    </article>
+    {% endfor %}
+  </div>
+</section>
+<section class="wrap delivery-strip"><span>✦</span><div><h2>اطلب بسهولة عبر واتساب</h2><p>اختَر منتجاتك، راجع سلتك، وأرسل طلبك مباشرة.</p></div><a class="btn gold-btn" href="{{ url_for('cart') }}">عرض السلة</a></section>
+{% endblock %}

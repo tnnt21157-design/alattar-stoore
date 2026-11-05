@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}{{ category.title }} | العطّار{% endblock %}
+{% block content %}
+<section class="page-banner"><div class="wrap"><span class="eyebrow">تسوّق العطّار</span><h1>{{ category.title }}</h1><p>{{ category.description }}</p></div></section>
+<section class="wrap section">
+  {% if products %}
+  <div class="product-grid">
+    {% for p in products %}
+    <article class="product-card">
+      <div class="product-photo">
+        <img src="{{ url_for('static', filename='images/' + p.image) }}" alt="{{ p.name }}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <span class="image-placeholder">🌿<small>{{ p.name }}</small></span>
+      </div>
+      <div class="product-info"><h3>{{ p.name }}</h3><p class="price">{{ "%.2f"|format(p.price) }} د.أ</p>
+        <form method="post" action="{{ url_for('add_to_cart', product_id=p.id) }}" class="add-form">
+          <label>الكمية <input type="number" name="quantity" min="1" max="50" value="1"></label>
+          <button class="btn dark-btn" type="submit">أضف للسلة +</button>
+        </form>
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+  {% else %}<div class="empty-state"><h2>سنضيف منتجات هذا القسم قريبًا</h2><a class="btn dark-btn" href="{{ url_for('home') }}">العودة للرئيسية</a></div>{% endif %}
+</section>
+{% endblock %}

@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="العطّار — أعشاب وبهارات وبقوليات ومونة بلدية في إربد، الأردن.">
+  <title>{% block title %}العطّار | خيرات الطبيعة{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<header class="site-header">
+  <div class="topline"><span>خيرات الطبيعة بين إيديك</span><span>التوصيل يبدأ من دينار حسب المنطقة</span></div>
+  <div class="header-main wrap">
+    <a class="brand" href="{{ url_for('home') }}"><span class="brand-icon">❧</span><span>العطّار<small>أصالة الطبيعة</small></span></a>
+    <a class="cart-link" href="{{ url_for('cart') }}">🛒 السلة <b>{{ cart_count }}</b></a>
+  </div>
+  <nav class="nav">
+    <div class="wrap nav-inner">
+      <a href="{{ url_for('home') }}">الرئيسية</a>
+      {% for key, item in categories.items() %}
+      <a href="{{ url_for('category', category_id=key) }}">{{ item.title }}</a>
+      {% endfor %}
+      <a href="{{ url_for('about') }}">من نحن</a>
+      <a href="{{ url_for('contact') }}">اتصل بنا</a>
+    </div>
+  </nav>
+</header>
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+  <div class="wrap flashes">
+    {% for category, message in messages %}<div class="flash {{ category }}">{{ message }}</div>{% endfor %}
+  </div>
+  {% endif %}
+{% endwith %}
+<main>{% block content %}{% endblock %}</main>
+<footer class="footer">
+  <div class="wrap footer-grid">
+    <div><a class="brand footer-brand" href="{{ url_for('home') }}">❧ العطّار</a><p>أعشاب وبهارات وبقوليات ومونة بلدية.</p></div>
+    <div><strong>روابط سريعة</strong><a href="{{ url_for('about') }}">من نحن</a><a href="{{ url_for('contact') }}">اتصل بنا</a><a href="{{ url_for('cart') }}">سلة المشتريات</a></div>
+    <div><strong>التوصيل</strong><p>يبدأ من 1 دينار، حسب المنطقة.</p><p>إربد، الأردن</p></div>
+  </div>
+  <div class="copyright">© العطّار — جميع الحقوق محفوظة</div>
+</footer>
+</body>
+</html>

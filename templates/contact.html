@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}اتصل بنا | العطّار{% endblock %}
+{% block content %}
+<section class="page-banner"><div class="wrap"><span class="eyebrow">يسعدنا تواصلك</span><h1>اتصل بنا</h1><p>للاستفسارات والطلبات، تواصل معنا عبر واتساب.</p></div></section>
+<section class="wrap section contact-grid">
+  <div class="contact-card"><span>📍</span><h2>موقع المحل</h2><p>الصريح، الشارع الرئيسي، مقابل معجنات الروشة.</p><p class="muted">إربد، الأردن</p></div>
+  <div class="contact-card"><span>💬</span><h2>واتساب الطلبات</h2><p>أرسل طلبك أو استفسارك مباشرة.</p><a class="btn gold-btn" target="_blank" rel="noopener" href="https://wa.me/{{ whatsapp }}">فتح واتساب</a></div>
+  <div class="contact-card"><span>🚚</span><h2>التوصيل</h2><p>يبدأ من 1 دينار، حسب المنطقة.</p></div>
+</section>
+{% endblock %}

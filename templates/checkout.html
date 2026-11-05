@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}إتمام الطلب | العطّار{% endblock %}
+{% block content %}
+<section class="wrap section checkout-layout">
+  <div><span class="eyebrow">باقي خطوة واحدة</span><h1>إتمام الطلب</h1><p class="muted">بعد إرسال النموذج، سيفتح واتساب برسالة جاهزة لتراجعها وترسلها للمحل.</p>
+    <form class="checkout-form" method="post">
+      <label>الاسم الكامل *<input name="name" required maxlength="100" placeholder="اكتب اسمك"></label>
+      <label>رقم الهاتف *<input name="phone" required maxlength="30" placeholder="07xxxxxxxx"></label>
+      <label>منطقة التوصيل *<input name="area" required maxlength="100" placeholder="مثال: الصريح"></label>
+      <label>العنوان بالتفصيل (اختياري)<input name="address" maxlength="250" placeholder="الشارع أو أقرب معلم"></label>
+      <label>ملاحظات (اختياري)<textarea name="notes" maxlength="500" rows="3" placeholder="أي تفاصيل إضافية"></textarea></label>
+      <button class="btn gold-btn full-btn" type="submit">إرسال الطلب إلى واتساب</button>
+    </form>
+  </div>
+  <aside class="order-summary"><h2>ملخص الطلب</h2>
+    {% for item in items %}<div class="summary-row"><span>{{ item.name }} × {{ item.quantity }}</span><strong>{{ "%.2f"|format(item.subtotal) }} د.أ</strong></div>{% endfor %}
+    <div class="summary-total"><span>الإجمالي قبل التوصيل</span><strong>{{ "%.2f"|format(total) }} د.أ</strong></div>
+    <p class="muted">التوصيل يبدأ من 1 دينار حسب المنطقة.</p>
+  </aside>
+</section>
+{% endblock %}
