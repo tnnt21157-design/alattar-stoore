@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}دخول الإدارة | العطّار{% endblock %}
+
+{% block content %}
+<section class="wrap section" style="max-width:450px; margin:60px auto;">
+    <div class="product-card" style="padding:30px;">
+        <h1 style="text-align:center;">لوحة تحكم العطّار</h1>
+        <p style="text-align:center;">تسجيل دخول الإدارة</p>
+
+        <form method="POST">
+            <label>كلمة المرور</label>
+            <input
+                type="password"
+                name="password"
+                required
+                style="width:100%;padding:14px;margin:12px 0;"
+            >
+            <button class="btn dark-btn" type="submit" style="width:100%;">
+                تسجيل الدخول
+            </button>
+        </form>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+{% block title %}إدارة متجر العطّار{% endblock %}
+
+{% block content %}
+<section class="wrap section">
+
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:15px;">
+        <div>
+            <span class="eyebrow">إدارة المتجر</span>
+            <h1>لوحة تحكم العطّار</h1>
+            <p>إدارة المنتجات والأسعار والأقسام والخصومات.</p>
+        </div>
+        <a class="btn dark-btn" href="{{ url_for('admin_logout') }}">تسجيل الخروج</a>
+    </div>
+
+    <hr style="margin:25px 0;">
+
+    <h2>إضافة منتج جديد</h2>
+
+    <form method="POST" action="{{ url_for('admin_save_product') }}"
+          style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;padding:20px;border:1px solid #ddd;border-radius:12px;">
+
+        <input name="name" placeholder="اسم المنتج" required>
+        <select name="category" required>
+            <option value="">اختر القسم</option>
+            {% for cid, category in categories.items() %}
+            <option value="{{ cid }}">{{ category.title }}</option>
+            {% endfor %}
+        </select>
+
+        <input name="price" type="number" step="0.01" min="0" placeholder="السعر الحالي">
+        <input name="old_price" type="number" step="0.01" min="0" placeholder="السعر قبل الخصم">
+        <input name="image" placeholder="اسم الصورة داخل images">
+        <input name="description" placeholder="وصف المنتج">
+
+        <button class="btn dark-btn" type="submit">إضافة المنتج</button>
+    </form>
+
+    <hr style="margin:30px 0;">
+
+    <h2>المنتجات الحالية ({{ products|length }})</h2>
+
+    {% for p in products %}
+    <article style="border:1px solid #ddd;border-radius:12px;padding:18px;margin:15px 0;">
+
+        <form method="POST" action="{{ url_for('admin_save_product') }}"
+              style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;">
+
+            <input type="hidden" name="id" value="{{ p.id }}">
+
+            <input name="name" value="{{ p.name }}" required>
+
+            <select name="category">
+                {% for cid, category in categories.items() %}
+                <option value="{{ cid }}" {% if p.category == cid %}selected{% endif %}>
+                    {{ category.title }}
+                </option>
+                {% endfor %}
+            </select>
+
+            <input name="price" type="number" step="0.01" min="0"
+                   value="{{ p.price if p.price is not none else '' }}"
+                   placeholder="السعر">
+
+            <input name="old_price" type="number" step="0.01" min="0"
+                   value="{{ p.old_price if p.old_price is not none else '' }}"
+                   placeholder="السعر قبل الخصم">
+
+            <input name="image" value="{{ p.image }}" placeholder="الصورة">
+            <input name="description" value="{{ p.description }}" placeholder="الوصف">
+
+            <button class="btn dark-btn" type="submit">حفظ التعديلات</button>
+        </form>
+
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px;">
+
+            <form method="POST" action="{{ url_for('admin_toggle_product', product_id=p.id) }}">
+                <button type="submit">
+                    {{ "إخفاء المنتج" if p.active else "إظهار المنتج" }}
+                </button>
+            </form>
+
+            <form method="POST"
+                  action="{{ url_for('admin_delete_product', product_id=p.id) }}"
+                  onsubmit="return confirm('هل تريد حذف هذا المنتج؟')">
+                <button type="submit">حذف المنتج</button>
+            </form>
+
+        </div>
+
+        <p style="margin-top:10px;">
+            الحالة: {{ "ظاهر في المتجر" if p.active else "مخفي" }}
+        </p>
+    </article>
+    {% endfor %}
+
+    <hr style="margin:30px 0;">
+
+    <h2>الأقسام</h2>
+
+    {% for cid, category in categories.items() %}
+    <div style="padding:12px;border-bottom:1px solid #ddd;">
+        <strong>{{ category.title }}</strong>
+        <small> — {{ cid }}</small>
+    </div>
+    {% endfor %}
+
+    <h3 style="margin-top:25px;">إضافة قسم جديد</h3>
+
+    <form method="POST" action="{{ url_for('admin_save_category') }}"
+          style="display:flex;gap:10px;flex-wrap:wrap;">
+        <input name="id" placeholder="رمز القسم بالإنجليزية" required>
+        <input name="title" placeholder="اسم القسم بالعربية" required>
+        <button class="btn dark-btn" type="submit">إضافة القسم</button>
+    </form>
+
+</section>
+{% endblock %}
